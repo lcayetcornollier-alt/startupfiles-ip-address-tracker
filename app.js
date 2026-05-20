@@ -18,12 +18,20 @@ async function trouvercarte(IP) {
 	const data = await a.json();
 	console.log(data);
 	ipaddressvalue.textContent = data.ip;
-	ipaddresslocation.textContent = data.location.city + data.location.country;
+	ipaddresslocation.textContent =
+		data.location.city + ", " + data.location.country;
 	ipaddresstimezone.textContent = "UTC" + data.location.timezone;
 	ipaddressisp.textContent = data.isp;
+    const map = L.map("map").setView([data.location.lat, data.location.lng], 13);
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "© OpenStreetMap",
+      }).addTo(map);
+      const marker = L.marker([data.location.lat, data.location.lng]).addTo(map);
 }
 form.addEventListener("submit", (e) => {
 	e.preventDefault();
 	trouvercarte(IPdonnat.value);
-    const map = L.map('map').setView([51.505, -0.09], 13);
+	  
 });
